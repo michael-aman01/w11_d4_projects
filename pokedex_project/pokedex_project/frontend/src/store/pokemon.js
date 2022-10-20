@@ -21,11 +21,6 @@ const addOnePokemon = pokemon => ({
   pokemon
 });
 
-const createPokemon = pokemon => ({
-  type: CREATE_ONE,
-  pokemon
-})
-
 //THUNK ACTION CREATORS
 export const getOnePokemon = (id) => dispatch => {
   return fetch(`/api/pokemon/${id}`)
@@ -68,8 +63,7 @@ export const createPokemonRequest = (pokemon) => async dispatch => {
     console.log(data)
     dispatch(addOnePokemon(data))       
     return data
-  }
-                                                               
+  }                                                       
     // .then(res => {
     //   console.log(res)
     //   res.json()
@@ -79,6 +73,22 @@ export const createPokemonRequest = (pokemon) => async dispatch => {
     //   dispatch(addOnePokemon(data))
     //   return data
     // })
+}
+
+export const editPokemonRequest = (pokemon) => dispatch => {
+  return fetch(`/api/pokemon/${pokemon.id}`, {
+    method: "PUT",
+    body: JSON.stringify(pokemon),
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
+  })
+    .then(res => res.json())
+    .then(data => {
+      return dispatch(addOnePokemon(data));
+      // return data;
+    })
 }
 
 const initialState = {
