@@ -20,7 +20,7 @@ const PokemonBrowser = () => {
   useEffect(() => {
     dispatch(getPokemon())
 
-  },[pokemon])
+  },[])
 
 
   if (!pokemon) {

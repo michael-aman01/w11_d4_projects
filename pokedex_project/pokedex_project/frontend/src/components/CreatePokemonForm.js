@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { getPokemonTypes } from '../store/pokemon';
+import { createPokemonRequest } from '../store/pokemon';
 
 const CreatePokemonForm = ({ hideForm }) => {
   const pokeTypes = useSelector(state => state.pokemon.types);
@@ -38,17 +39,20 @@ const CreatePokemonForm = ({ hideForm }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // const payload = {
-    //   number,
-    //   attack,
-    //   defense,
-    //   imageUrl,
-    //   name,
-    //   type,
-    //   move1,
-    //   move2,
-    //   moves: [move1, move2]
-    // };
+    const payload = {
+      number,
+      attack,
+      defense,
+      imageUrl,
+      name,
+      type,
+      move1,
+      move2,
+      moves: [move1, move2]
+    };
+
+    console.log(payload)
+    dispatch(createPokemonRequest(payload));
 
     let createdPokemon;
     if (createdPokemon) {
@@ -71,7 +75,7 @@ const CreatePokemonForm = ({ hideForm }) => {
           min="1"
           required
           value={number}
-          onChange={updateNumber} />
+          onChange={(e) => setNumber(e.target.value)} />
         <input
           type="number"
           placeholder="Attack"

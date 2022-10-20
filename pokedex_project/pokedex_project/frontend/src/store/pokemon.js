@@ -3,6 +3,7 @@ import { LOAD_ITEMS, REMOVE_ITEM, ADD_ITEM } from './items';
 const LOAD = 'pokemon/LOAD';
 const LOAD_TYPES = 'pokemon/LOAD_TYPES';
 const ADD_ONE = 'pokemon/ADD_ONE';
+const CREATE_ONE = 'pokemon/CREATE_ONE';
 
 //NORMAL ACTION CREATORS
 const load = list => ({
@@ -19,6 +20,11 @@ const addOnePokemon = pokemon => ({
   type: ADD_ONE,
   pokemon
 });
+
+const createPokemon = pokemon => ({
+  type: CREATE_ONE,
+  pokemon
+})
 
 //THUNK ACTION CREATORS
 export const getOnePokemon = (id) => dispatch => {
@@ -39,8 +45,6 @@ export const getPokemon = () => async dispatch => {
   }
 };
 
-
-
 export const getPokemonTypes = () => async dispatch => {
   const response = await fetch(`/api/pokemon/types`);
   if (response.ok) {
@@ -48,6 +52,24 @@ export const getPokemonTypes = () => async dispatch => {
     dispatch(loadTypes(types));
   }
 };
+
+export const createPokemonRequest = (pokemon) => dispatch => {
+  return fetch('/api/pokemon', {
+    method: "POST",
+    body: JSON.stringify(pokemon), 
+    header: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
+  })
+    .then(res => {
+      console.log(res)
+      res.json()
+    })
+    .then(data => {
+      console.log(data)
+      dispatch(createPokemon(data))})
+}
 
 const initialState = {
   list: [],
