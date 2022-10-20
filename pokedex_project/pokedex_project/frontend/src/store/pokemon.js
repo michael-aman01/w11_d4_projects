@@ -53,22 +53,32 @@ export const getPokemonTypes = () => async dispatch => {
   }
 };
 
-export const createPokemonRequest = (pokemon) => dispatch => {
-  return fetch('/api/pokemon', {
-    method: "POST",
-    body: JSON.stringify(pokemon), 
-    header: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    }
-  })
-    .then(res => {
-      console.log(res)
-      res.json()
-    })
-    .then(data => {
-      console.log(data)
-      dispatch(createPokemon(data))})
+export const createPokemonRequest = (pokemon) => async dispatch => {
+  console.log(pokemon)
+  const response = await fetch('/api/pokemon', {
+                                                                method: "POST",
+                                                                body: JSON.stringify(pokemon), 
+                                                                headers: {
+                                                                  'Content-Type': 'application/json',
+                                                                  'Accept': 'application/json'
+                                                                }
+                                                                                        })
+  if(response.ok){
+    const data = await response.json()
+    console.log(data)
+    dispatch(addOnePokemon(data))       
+    return data
+  }
+                                                               
+    // .then(res => {
+    //   console.log(res)
+    //   res.json()
+    // })
+    // .then(data => {
+    //   console.log(data)
+    //   dispatch(addOnePokemon(data))
+    //   return data
+    // })
 }
 
 const initialState = {
@@ -147,6 +157,11 @@ const pokemonReducer = (state = initialState, action) => {
           items: [...state[action.item.pokemonId].items, action.item.id]
         }
       };
+
+    case CREATE_ONE:
+      console.log(action.pokemon)
+      return state;
+    
     default:
       return state;
   }

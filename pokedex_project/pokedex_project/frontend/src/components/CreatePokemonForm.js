@@ -39,6 +39,7 @@ const CreatePokemonForm = ({ hideForm }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+
     const payload = {
       number,
       attack,
@@ -51,16 +52,14 @@ const CreatePokemonForm = ({ hideForm }) => {
       moves: [move1, move2]
     };
 
-    console.log(payload)
-    dispatch(createPokemonRequest(payload));
-
-    let createdPokemon;
+    let createdPokemon = await dispatch(createPokemonRequest(payload))
+    console.log(createdPokemon)
     if (createdPokemon) {
       history.push(`/pokemon/${createdPokemon.id}`);
       hideForm();
     }
   };
-
+  // https://www.pokemon.com/static-assets/content-assets/cms2/img/video-games/_tiles/strategy/go/giratina/pokemon-go-169.jpg
   const handleCancelClick = (e) => {
     e.preventDefault();
     hideForm();
@@ -75,7 +74,8 @@ const CreatePokemonForm = ({ hideForm }) => {
           min="1"
           required
           value={number}
-          onChange={(e) => setNumber(e.target.value)} />
+          onChange={updateNumber}
+             />
         <input
           type="number"
           placeholder="Attack"
